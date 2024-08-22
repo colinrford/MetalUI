@@ -19,7 +19,7 @@ After the example usage, the reader may find more commentary from the forker.
 
 ## Example Usage
 
-### SwiftUI
+### ContentView.swift – SwiftUI
 ```swift
 import MetalUI
 import SwiftUI
@@ -34,7 +34,7 @@ struct ContentView: View {
 
 ```
 
-### BasicMetalView
+### BasicMetalView.swift – MTKView
 ```swift
 import MetalUI
 import MetalKit
@@ -67,7 +67,7 @@ class BasicMetalView: MTKView, MetalPresenting {
 }
 ```
 
-### BasicMetalRenderer
+### BasicMetalRenderer.swift – MTKViewDelegate
 ```swift
 import MetalUI
 import MetalKit
@@ -140,7 +140,7 @@ final class BasicMetalRenderer: NSObject, MetalRendering {
 }
 ```
 
-### Shaders.metal
+### shaders.metal
 ```metal
 #include <metal_stdlib>
 using namespace metal;
@@ -167,13 +167,21 @@ fragment float4 basic_fragment_function(VertexOut vIn [[ stage_in ]]) {
 
 -------------------------------------------------------------
 
-### Possible Modifications
+## Possible Modifications
 
 Often when using Metal, one uses MetalKit as well. MetalKit provides two utilities to setup a view: the `MTKView` class and `MTKViewDelegate` protocol. In MetalUI one creates an `MTKView` by creating a class that conforms to the `MetalPresenting` protocol, and an `MTKViewDelegate` by creating a class that conforms to `MetalRendering` (which conforms to `MTKViewDelegate`). The `MetalPresenting` protocol seems more or less sufficient for most needs. The `MetalRendering` protocol on the other hand might benefit from some modifications.
 
-If one wants to use more complicated renderers and rendering techniques, it might make sense to change the `MetalRendering` protocol (or add an additional protocol). As provided, it requires a `MTLRenderPipelineState`, `MTLBuffer`, and an array of the aptly-named `MetalRenderingVertex`. Carrying more pipeline states and buffers is somewhat of a syntactic issue, and hence rather easy to address, but nevertheless one will easily encounter inconveniences of the basic setup provided by MetalUI when working with more complicated renderers.
+### To MetalPresenting
 
-The forker does not feel strongly enough at this time to make any firm decision to alter the package here. Rather, just wanted to throw these thoughts out there. 
+It could be nice to add customization points to e.g. `func configure(device: MTLDevice?)` or `func renderer(forDevice device: MTLDevice) -> MetalRendering`. Though a custom initializer can probably satisfy most needs.
+
+### To MetalRendering
+
+If one wants to use more complicated renderers and rendering techniques, it might make sense to change the `MetalRendering` protocol (or add an additional protocol). As provided, it requires a `MTLRenderPipelineState`, `MTLBuffer`, and an array of the aptly-named `MetalRenderingVertex`. Carrying more pipeline states and buffers is somewhat of a syntactic issue, and hence rather easy to address, but nevertheless one wdill easily encounter inconveniences of the basic setup provided by MetalUI when working with more complicated renderers.
+
+The forkin' author does not feel strongly enough at this time to make any firm decision to alter the package here. Rather, simply wanted to throw these thoughts out there. 
+
+_____________________________________________________________
 
 ### Exercise for the reader
 
